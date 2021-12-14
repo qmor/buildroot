@@ -5,6 +5,8 @@ allow-hotplug eth0
 auto eth0
 #iface eth1 inet dhcp
 iface eth0 inet static
-address 172.26.13.154
+address 172.26.14.230
 netmask 255.255.255.0
-#gateway 192.168.0.254
+gateway 172.26.14.1
+
+
