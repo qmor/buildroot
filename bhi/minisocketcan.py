@@ -80,7 +80,7 @@ class Message:
         can_id = can_id & 0x1fffffff
         return Message(can_id, ext_bit, dlc[0], data)
 
-    def __init__(self, can_id, ext_id=True, dlc=0, data=None):
+    def __init__(self, can_id, ext_id=True, dlc=0, data=[]):
         self.can_id = can_id
         self.ext_id = ext_id
         self.data = data
