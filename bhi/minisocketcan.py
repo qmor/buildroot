@@ -74,7 +74,7 @@ class Message():
         _id, dlc, _void, data = struct.unpack("is3s8s",b)
         extbit = ((_id>>31)&1)==1
         _id = _id&0x1fffffff
-        return Message(_id,extbit,dlc,data)
+        return Message(_id,extbit,dlc[0],data)
     def __init__(self, canId, extId = True, dlc=0, data=None):
         self.canId = canId
         self.extId = extId
@@ -110,7 +110,7 @@ class SocketcanBus():
 
         if ret: # not empty or True
             cf, addr = self.socket.recvfrom(CANFD_MTU)
-            print(cf,addr)
+            #print(cf,addr)
             #msg = capture_message(self.socket, get_channel)
             #if not msg.channel and self.channel:
             #    # Default to our own channel
@@ -122,10 +122,11 @@ class SocketcanBus():
             return None, self._is_filtered
 
 
-            
-can0 = SocketcanBus("can0")
-can0.send(Msg(0x12345678, 8, "pidor".encode()))
-can1 = SocketcanBus("can1")
-can1.send(Msg(0x12345678, 8, "pidor1".encode()))
+if __name__ == "__main__":            
+    #can0 = SocketcanBus("can0")
+    #can0.send(Msg(0x12345678, 8, "pidor".encode()))
+    can1 = SocketcanBus("can1")
+    can1.send(Msg(0x12345678, 8, "pidor1".encode()))
 
-#print(can0.recv(100))
+    #print(can0.recv(100))
+    print(can1.recv(100))
