@@ -1,0 +1,28 @@
+#! /bin/sh
+#
+# Start the can interfaces....
+#
+
+case "$1" in
+	start)
+		echo "start can"
+		/sbin/ip link set can0 type can bitrate 1000000
+		/sbin/ip link set can1 type can bitrate 1000000
+		/sbin/ifconfig can0 up
+		/sbin/ifconfig can1 up
+		;;
+	stop)
+		echo -n "Stopping can..."
+		/sbin/ifconfig can0 down
+		/sbin/ifconfig can1 down
+		;;
+	restart|reload)
+		"$0" stop
+		"$0" start
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?
