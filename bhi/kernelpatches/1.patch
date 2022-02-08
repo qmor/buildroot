@@ -1,8 +1,8 @@
 diff --git a/arch/arm/boot/dts/stm32mp157a-dk1.dts b/arch/arm/boot/dts/stm32mp157a-dk1.dts
-index f48207dad581..61c855ce0a8f 100644
+index f48207dad581..f853e8947a6f 100644
 --- a/arch/arm/boot/dts/stm32mp157a-dk1.dts
 +++ b/arch/arm/boot/dts/stm32mp157a-dk1.dts
-@@ -20,3 +20,37 @@ chosen {
+@@ -20,3 +20,71 @@ chosen {
  		stdout-path = "serial0:115200n8";
  	};
  };
@@ -39,4 +39,38 @@ index f48207dad581..61c855ce0a8f 100644
 +	pinctrl-0 = <&m_can2_pins_a>;
 +	pinctrl-1 = <&m_can2_sleep_pins_a>;
 +	status = "okay";
++};
++
++&vrefbuf {
++    regulator-min-microvolt = <2500000>;
++    regulator-max-microvolt = <2500000>;
++    vdda-supply = <&vdd>;
++    status = "okay";
++};
++
++&adc {
++    pinctrl-names = "default";
++    pinctrl-0 = <&adc12_ain_pins_a>, <&adc12_usb_cc_pins_a>;
++    vdd-supply = <&vdd>;
++    vdda-supply = <&vdd>;
++    vref-supply = <&vrefbuf>;
++    status = "okay";
++    adc1: adc@0 {
++	/*
++	 * Type-C USB_PWR_CC1 & USB_PWR_CC2 on in18 & in19.
++	 * Use at least 5 * RC time, e.g. 5 * (Rp + Rd) * C:
++	 * 5 * (56 + 47kOhms) * 5pF => 2.5us.
++	 * Use arbitrary margin here (e.g. 5us).
++	 */
++	st,min-sample-time-nsecs = <5000>;
++	/* AIN connector, USB Type-C CC1 & CC2 */
++	st,adc-channels = <0 1 6 13 18 19>;
++	status = "okay";
++    };
++    adc2: adc@100 {
++	/* AIN connector, USB Type-C CC1 & CC2 */
++	st,adc-channels = <0 1 2 6 18 19>;
++	st,min-sample-time-nsecs = <5000>;
++	status = "okay";
++    };
 +};
